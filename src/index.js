@@ -1,15 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import store from './store';
+import { ThemeProvider, CSSReset } from '@chakra-ui/core';
 import { Provider } from 'react-redux';
+
+import './index.css';
 import * as serviceWorker from './serviceWorker';
+import store from './store';
+
+import App from './App';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <ThemeProvider>
+    <CSSReset />
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ThemeProvider>,
   document.getElementById('root')
 );
 
