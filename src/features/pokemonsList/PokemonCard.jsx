@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Image, Box } from '@chakra-ui/core';
+import { Flex, Image, Box, Text } from '@chakra-ui/core';
 import { useHistory } from 'react-router-dom';
 
 const PokemonCard = ({ pokemon }) => {
@@ -16,7 +16,7 @@ const PokemonCard = ({ pokemon }) => {
     >
       <Flex flexDirection='column' align='center'>
         <Image src={pokemon.sprite} alt={pokemon.name} objectFit='contain' />
-        <span>{pokemon.name}</span>
+        <Text>{pokemon.name}</Text>
       </Flex>
     </Box>
   );

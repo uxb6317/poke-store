@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { API } from '../../shared/api';
 
 const initialState = {
-  pokemonDetail: {},
+  pokemonDetail: null,
   isLoading: false
 };
 

@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
   Flex,
@@ -14,12 +14,9 @@ import {
 } from '@chakra-ui/core';
 import Fuse from 'fuse.js';
 
-import { fetchPokemons } from '../pokemonsList/pokemonsSlice';
-
 const RESULT_NUM = 5;
 
 const Search = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
   const [term, setTerm] = useState('');
   const { pokemonsByName } = useSelector(state => state.pokemons);
@@ -80,6 +77,7 @@ const Search = () => {
           p={1}
           boxShadow='lg'
           borderRadius='md'
+          zIndex={2}
         >
           {filteredPokemons.slice(0, RESULT_NUM).map(({ name }, index) => (
             <Box onClick={() => handleSearchClick(name)} key={name}>
