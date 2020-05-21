@@ -1,13 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { API } from '../../shared/api';
 
-const PER_PAGE = 20;
-
 const initialState = {
   pokemonsByName: {},
-  currentPage: 1,
-  pages: {},
-  isLoading: false
+  pokemonsList: [],
+  isLoading: false,
 };
 
 export const listSlice = createSlice({
@@ -22,40 +19,68 @@ export const listSlice = createSlice({
 
       pokemons.forEach((pokemon, index) => {
         state.pokemonsByName[pokemon.name] = pokemon;
-        state.pokemonsByName[
-          pokemon.name
-        ].sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index +
-          1}.png`;
+        state.pokemonsByName[pokemon.name].sprites = {
+          front_default: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+            index + 1
+          }.png`,
+        };
       });
-
-      const numPages = Math.floor(pokemons.length / PER_PAGE);
-      for (let index = 0; index <= numPages; index++) {
-        if (index === 0) {
-          state.pages[index + 1] = pokemons
-            .slice(0, PER_PAGE)
-            .map(pokemon => pokemon.name);
-        } else {
-          state.pages[index + 1] = pokemons
-            .slice(index * PER_PAGE, index * PER_PAGE + PER_PAGE)
-            .map(pokemon => pokemon.name);
-        }
-      }
+      state.pokemonsList = pokemons.map((pokemon) => pokemon.name);
 
       state.isLoading = false;
     },
-    jumpToPage: (state, action) => {
-      state.currentPage = action.payload;
-    }
-  }
+    getDetailStart: (state, action) => {
+      state.isLoading = true;
+    },
+    getDetailSuccess: (state, action) => {
+      const { pokemon } = action.payload;
+      state.pokemonsByName[pokemon.name] = pokemon;
+
+      state.isLoading = false;
+    },
+  },
 });
 
-export const fetchPokemons = () => async dispatch => {
+export const fetchPokemons = () => async (dispatch) => {
   dispatch(getPokemonsStart());
   const response = await API.get('/pokemon?limit=151');
   const pokemons = response.data.results;
   dispatch(getPokemons({ pokemons }));
 };
 
-export const { getPokemons, getPokemonsStart, jumpToPage } = listSlice.actions;
+export const fetchPokemonDetails = (name) => async (dispatch) => {
+  try {
+    dispatch(getDetailStart());
+    const pokemon = {};
+    const response = await API.get(`/pokemon/${name}`);
+
+    pokemon.abilities = response.data.abilities;
+    pokemon.height = response.data.height;
+    pokemon.moves = response.data.moves;
+    pokemon.name = response.data.name;
+    pokemon.sprites = response.data.sprites;
+    pokemon.stats = response.data.stats;
+    pokemon.types = response.data.types;
+    pokemon.types = response.data.types;
+    pokemon.weight = response.data.weight;
+
+    const speciesResponse = await API.get(`/pokemon-species/${name}`);
+
+    pokemon.description = speciesResponse.data.flavor_text_entries[2];
+    pokemon.genera = speciesResponse.data.genera[2];
+    pokemon.habitat = speciesResponse.data.habitat;
+
+    dispatch(getDetailSuccess({ pokemon }));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const {
+  getPokemons,
+  getPokemonsStart,
+  getDetailStart,
+  getDetailSuccess,
+} = listSlice.actions;
 
 export default listSlice.reducer;

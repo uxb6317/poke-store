@@ -1,25 +1,26 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Button, Box } from '@chakra-ui/core';
+import { Button, ButtonGroup } from '@chakra-ui/core';
 
-import { jumpToPage } from './pokemonsSlice';
-
-const PokemonPagination = ({ pages, currentPage }) => {
-  const dispatch = useDispatch();
-
+const PokemonPagination = ({ numPages, setPage, page }) => {
   return (
-    <Box>
-      {Object.keys(pages).map(page => (
-        <Button
-          isDisabled={page === currentPage}
-          mx={1}
-          onClick={() => dispatch(jumpToPage(page))}
-          key={page}
-        >
-          {page}
-        </Button>
-      ))}
-    </Box>
+    <ButtonGroup>
+      {numPages !== 0 &&
+        Array(numPages)
+          .fill()
+          .map((_, index) => {
+            const p = index + 1;
+            return (
+              <Button
+                variantColor='red'
+                onClick={() => setPage(p)}
+                isDisabled={p === page}
+                key={index}
+              >
+                {p}
+              </Button>
+            );
+          })}
+    </ButtonGroup>
   );
 };
 

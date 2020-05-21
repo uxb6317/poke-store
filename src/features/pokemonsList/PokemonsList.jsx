@@ -5,8 +5,14 @@ import PokemonCard from './PokemonCard';
 
 const PokemonsList = ({ pokemons }) => {
   return (
-    <Grid mb={5} templateColumns='repeat(5, 1fr)' gap={6}>
-      {pokemons.map(pokemon => (
+    <Grid
+      templateColumns={{
+        base: 'repeat(2, auto)',
+        sm: 'repeat( auto-fill, minmax(130px, 1fr) )',
+      }}
+      gap={4}
+    >
+      {pokemons.map((pokemon) => (
         <PokemonCard key={pokemon.name} pokemon={pokemon} />
       ))}
     </Grid>

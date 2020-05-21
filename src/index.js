@@ -5,11 +5,12 @@ import { Provider } from 'react-redux';
 
 import * as serviceWorker from './serviceWorker';
 import store from './store';
+import { customTheme } from './theme';
 
 import App from './App';
 
 ReactDOM.render(
-  <ThemeProvider>
+  <ThemeProvider theme={customTheme}>
     <CSSReset />
     <Provider store={store}>
       <App />
