@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, SimpleGrid } from '@chakra-ui/core';
 
+import { typeColorTable } from '../pokemonDetail/typesColors';
+
 const TYPES_ARR = [
   'normal',
   'fire',
@@ -27,6 +29,7 @@ const TypesFilter = ({ typeFilter, handleTypeFilter }) => {
     <SimpleGrid minChildWidth='60px' spacing={4}>
       {TYPES_ARR.map((t) => (
         <Button
+          size='sm'
           variantColor={typeFilter.includes(t) ? 'red' : 'gray'}
           key={t}
           onClick={() => handleTypeFilter(t)}

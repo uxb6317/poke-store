@@ -5,9 +5,12 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
+  Text,
+  Divider,
 } from '@chakra-ui/core';
 
 import TypesFilter from './TypesFilter';
+import PokemonOrderFilter from './PokemonOrderFilter';
 
 const PokemonListFilter = ({
   typeFilter,
@@ -16,11 +19,16 @@ const PokemonListFilter = ({
   isOpen,
 }) => {
   return (
-    <Drawer placement='left' onClose={onClose} isOpen={isOpen} size='xs'>
+    <Drawer placement='left' onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader borderBottomWidth='1px'>Filter Pokemons</DrawerHeader>
-        <DrawerBody>
+        <DrawerBody py={6}>
+          <PokemonOrderFilter />
+          <Text mt={4} color='blue.500' fontWeight='semibold'>
+            Types
+          </Text>
+          <Divider />
           <TypesFilter
             typeFilter={typeFilter}
             handleTypeFilter={handleTypeFilter}
